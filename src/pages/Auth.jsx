@@ -158,11 +158,11 @@ function Auth({ register }) {
     <>
       <div id='loginPage' className='flex justify-center items-center flex-col'>
         <h1 className='text-4xl font-bold'>BOOK STORE</h1>
-        <div className='grid grid-cols-3 w-full mt-10' >
+        <div className='md:grid grid-cols-3 w-full mt-10' >
           <div></div>
           {/* form */}
           <div>
-            <form className='bg-gray-900 p-10 rounded flex justify-center items-center flex-col '>
+            <form className='bg-gray-900 p-10  rounded flex justify-center items-center flex-col '>
               <div className='flex justify-center items-center' style={{ width: '70px', height: '70px', borderRadius: '50%', border: '1px solid  white' }}>
                 <FontAwesomeIcon icon={faUser} style={{ color: 'white' }} className='fa-2x' />
               </div>

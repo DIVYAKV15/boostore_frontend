@@ -28,11 +28,13 @@ function Header() {
     const { userProfileUpdateStatus } = useContext(userProfileUpdateStatusContext)
     console.log(userProfile)
 
+    
     const handleLogout = () => {
         sessionStorage.removeItem("existingUser")
         sessionStorage.removeItem("token")
-        alert("Logout Successfully")
+          alert("Logout Successfully")
         navigate('/')
+
     }
 
 
@@ -84,7 +86,7 @@ function Header() {
                                     <div className="py-1" role="none">
 
                                         <Link to={'/profile'}><a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-0"><FontAwesomeIcon icon={{ faUser }} />Profile</a></Link>
-                                        <a onClick={handleLogout} href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-0"><FontAwesomeIcon icon={faPowerOff} /> LogOut</a>
+                                        <a  href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-0"><FontAwesomeIcon icon={faPowerOff} onClick={handleLogout} /> LogOut</a>
 
                                     </div>
                                 </div>}
@@ -122,7 +124,7 @@ function Header() {
                                 <div className="py-1" role="none">
 
                                     <Link to={'/profile'}><a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-0"><FontAwesomeIcon icon={{ faUser }} />Profile</a></Link>
-                                    <a onClick={handleLogout} href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-0"><FontAwesomeIcon icon={faPowerOff} /> LogOut</a>
+                                    <a  href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-0"><FontAwesomeIcon icon={faPowerOff} onClick={handleLogout}/> LogOut</a>
 
                                 </div>
                             </div>}
