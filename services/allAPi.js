@@ -90,9 +90,16 @@ export const getAllUserAddedBooksApi = async (reqHeader) => {
 
 // api to view the user purchased book history
 
-export const getAllUserPurchasedBooksApi = async (reqHeader) => {
-    return await commonApi('GET', `${serverUrl}/all-user-purchased-books`, "", reqHeader)
+// export const getAllUserPurchasedBooksApi = async (reqHeader) => {
+//     return await commonApi('GET', `${serverUrl}/all-user-purchased-books`, "", reqHeader)
+// }
+
+//api to get all user brought  book 
+export const allUserbroughtBookApi = async(reqHeader)=>{
+    return await commonApi('GET', `${serverUrl}/all-user-purchased-books
+`,"",reqHeader)
 }
+
 
 // api to delete a book
 

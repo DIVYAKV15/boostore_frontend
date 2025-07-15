@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck, faPlus } from '@fortawesome/free-solid-svg-icons'
 import EditProfile from '../components/EditProfile'
 import { toast, ToastContainer } from 'react-toastify'
-import { addBookAPi, deleteBookApi, getAllUserAddedBooksApi, getAllUserPurchasedBooksApi } from '../../../services/allAPi'
+import { addBookAPi, allUserbroughtBookApi, deleteBookApi, getAllUserAddedBooksApi } from '../../../services/allAPi'
 import { serverUrl } from '../../../services/serverUrl'
 import { userProfileUpdateStatusContext } from '../../context/ContextShare'
 import { useContext } from 'react'
@@ -16,9 +16,9 @@ function Profile() {
   const [purchaseStatus, setPurchaseStatus] = useState(false);
   const [userAddedBooks, setUserAddedBooks] = useState([])
 
-  const [userPurchasedBooks, setUserPurchasedBooks] = useState([])
+  // const [userPurchasedBooks, setUserPurchasedBooks] = useState([])
 
-
+  const [UserBroughtBook, setUserBroughtBook] = useState([])
   const [deleteStatus, setDeleteStatus] = useState({})
   // to store the data of book in backend for that we want to access the data from input 
   //so setting the state for that 
@@ -193,20 +193,37 @@ function Profile() {
     const result = await getAllUserAddedBooksApi(reqHeader)
     console.log(result)
     setUserAddedBooks(result.data)
-    console.log(userAddedBooks)
+
   }
 
   // get user purchased book
 
-  const getAllUserPurchasedBooks = async (token) => {
+  // const getAllUserPurchasedBooks = async (token) => {
+
+  //   const reqHeader = {
+  //     "Authorization": `Bearer ${token}`
+  //   }
+  //   const result = await getAllUserPurchasedBooksApi(reqHeader)
+  //   // console.log('userPurchasedBooks Result is', result)
+  //   setUserPurchasedBooks(result.data)
+  //   console.log('userPurchasedBooks', userPurchasedBooks)
+  // }
+
+  //get all user brought books
+  const getAllUserbroughtBooks = async (token) => {
+    console.log('getAllUserAddedBooks');
 
     const reqHeader = {
       "Authorization": `Bearer ${token}`
     }
-    const result = await getAllUserPurchasedBooksApi(reqHeader)
-    // console.log('userPurchasedBooks Result is', result)
-    setUserPurchasedBooks(result.data)
-    console.log('userPurchasedBooks', userPurchasedBooks)
+    const result = await allUserbroughtBookApi(reqHeader)
+    console.log("Brought books result", result);
+    setUserBroughtBook(result.data);
+
+    // console.log(UserBroughtBook);
+
+
+
   }
 
   // delete a book method
@@ -248,20 +265,33 @@ function Profile() {
   // }, [bookStatus, purchaseStatus, deleteStatus])
 
   useEffect(() => {
-    const tok = sessionStorage.getItem("token")
-
-    if (tok) {
+    if (sessionStorage.getItem("token")) {
+      const tok = sessionStorage.getItem("token")
       setToken(tok)
 
-      if (bookStatus) {
+      if (bookStatus == true) {
         getAllUserAddedBooks(tok)
-      } else if (purchaseStatus) {
-        getAllUserPurchasedBooks(tok)
-      } else {
-        console.log('something went wrong')
+      }
+      else if (purchaseStatus == true) {
+        getAllUserbroughtBooks(tok)
+
+      } else if (sellStatus) {
+        // 
+      }
+      else {
+        console.log('something went wrong');
+
       }
     }
-  }, [bookStatus, deleteStatus,purchaseStatus])
+
+  }, [bookStatus, deleteStatus])
+
+
+
+
+
+
+
 
   // to access the user details in profile page
   useEffect(() => {
@@ -297,9 +327,9 @@ function Profile() {
       {/* tab section */}
       <div className='md:px-40 px-5 mb-10'>
         <div className="flex justify-center items-center text-xl">
-          <p onClick={() => { setSellStatus(true); setBookStatus(false); setPurchaseStatus(false) }} className={sellStatus ? ' cursor-pointer px-4 py-3 text-blue-500  border-gray-300 border-l border-t border-r  rounded' : 'px-4 py-3  border-gray-300 border-b rounded'}>Sell Book</p>
-          <p onClick={() => { setSellStatus(false); setBookStatus(true); setPurchaseStatus(false) }} className={bookStatus ? ' cursor-pointer px-4 py-3 text-blue-500  border-gray-300 border-l border-t border-r  rounded' : 'px-4 py-3  border-gray-300 border-b rounded'}>Book Status</p>
-          <p onClick={() => { setSellStatus(false); setBookStatus(false); setPurchaseStatus(true) }} className={purchaseStatus ? 'cursor-pointer px-4 py-3 text-blue-500 border-gray-300 border-l border-t border-r  rounded' : 'px-4 py-3  border-gray-300 border-b rounded'}>Purchase History</p>
+          <button type='button'  onClick={() => { setSellStatus(true); setBookStatus(false); setPurchaseStatus(false) }} className={sellStatus ? ' cursor-pointer px-4 py-3 text-blue-500  border-gray-300 border-l border-t border-r  rounded' : 'px-4 py-3  border-gray-300 border-b rounded'}>Sell Book</button>
+          <button type='button'  onClick={() => { setSellStatus(false); setBookStatus(true); setPurchaseStatus(false) }} className={bookStatus ? ' cursor-pointer px-4 py-3 text-blue-500  border-gray-300 border-l border-t border-r  rounded' : 'px-4 py-3  border-gray-300 border-b rounded'}>Book Status</button>
+          <button type='button'  onClick={() => { setSellStatus(false); setBookStatus(false); setPurchaseStatus(true) }} className={purchaseStatus ? 'cursor-pointer px-4 py-3 text-blue-500 border-gray-300 border-l border-t border-r  rounded' : 'px-4 py-3  border-gray-300 border-b rounded'}>Purchase History</button>
         </div>
         {/* sell book section */}
         {sellStatus && <div className='md:p-10'>
@@ -387,17 +417,18 @@ function Profile() {
         </div>}
         {/* boot status section */}
         {bookStatus && <div className='md:p-10  my-20 shadow'>
-          {userAddedBooks.length > 0 ? userAddedBooks.map((items, index) => (<div key={index} className=' p-5'>
+          {userAddedBooks?.length > 0 ? userAddedBooks?.map((items, index) => (<div key={index} className=' p-5'>
             <div className="md:grid grid-cols-[3fr_1fr] md:p-10 bg-gray-200 mb-10" >
               <div className=''>
                 <h1 className='text-2xl'>{items.title}</h1>
                 <p>{items.author}</p>
                 <h3>$ {items.dprice}</h3>
                 <p>{items.abstract}</p>
+               
                 <div className="flex">
-                  {items?.status == 'pending' ? <img src="https://previews.123rf.com/images/newdesignillustrations/newdesignillustrations1811/newdesignillustrations181115287/127557450-decision-pending-stamp-seal-watermark-with-distress-style-blue-vector-rubber-print-of-decision.jpg" alt="" style={{ width: '100px', height: '100px' }} />
+                  {items?.status == 'pending' ? <img src="https://previews.123rf.com/images/newdesignillustrations/newdesignillustrations1811/newdesignillustrations181115287/127557450-decision-pending-stamp-seal-watermark-with-distress-style-blue-vector-rubber-print-of-decision.jpg" alt="no_img" style={{ width: '100px', height: '100px' }} />
                     : items?.status == 'Approved' ?
-                      <img src="https://c8.alamy.com/comp/ERDFRB/vector-illustration-of-green-approved-stamp-concept-ERDFRB.jpg" alt="" style={{ width: '100px', height: '100px' }} /> :
+                      <img src="https://c8.alamy.com/comp/ERDFRB/vector-illustration-of-green-approved-stamp-concept-ERDFRB.jpg" alt="approved_img" style={{ width: '100px', height: '100px' }} /> :
                       <img src="https://cdn-icons-png.flaticon.com/512/6188/6188726.png" alt="" style={{ width: '100px', height: '100px' }} />}
                 </div>
 
@@ -429,8 +460,8 @@ function Profile() {
         </div>}
         {/* purchase history section */}
         {purchaseStatus && <div className='md:p-10  my-20 shadow'>
-          {userPurchasedBooks.length > 0 ?
-            userPurchasedBooks.map((items, index) => (
+          {UserBroughtBook?.length > 0 ?
+            UserBroughtBook?.map((items, index) => (
               <div key={index} className=' p-5'>
                 <div className="md:grid grid-cols-[3fr_1fr] md:p-10 bg-gray-200 mb-10" >
                   <div className=''>
