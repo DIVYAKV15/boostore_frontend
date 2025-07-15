@@ -58,7 +58,7 @@ function LandingPage() {
             <p>Loading...</p>}
         </div>
 
-        <Link to={'/all-books'}><button className='border text-white bg-blue-950 p-3 mb-5 hover:border hover:border-blue-500 hover:bg-white'>Explore More</button></Link>
+        <Link to={'/all-books'}><button className='border text-white bg-blue-950 p-3 mb-5 hover:border hover:border-blue-500 hover:bg-white hover:text-blue-500'>Explore More</button></Link>
       </div>
       {/* if data is not coming it should shows  */}
 
