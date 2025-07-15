@@ -61,7 +61,7 @@ function Profile() {
   })
 
   // 
-      const { userProfileUpdateStatus } = useContext(userProfileUpdateStatusContext)
+  const { userProfileUpdateStatus } = useContext(userProfileUpdateStatusContext)
 
 
   // when the type is text then we can get the value in e.target.value
@@ -206,7 +206,7 @@ function Profile() {
     const result = await getAllUserPurchasedBooksApi(reqHeader)
     // console.log('userPurchasedBooks Result is', result)
     setUserPurchasedBooks(result.data)
-    // console.log('userPurchasedBooks', userPurchasedBooks)
+    console.log('userPurchasedBooks', userPurchasedBooks)
   }
 
   // delete a book method
@@ -261,7 +261,7 @@ function Profile() {
         console.log('something went wrong')
       }
     }
-  }, [bookStatus, deleteStatus])
+  }, [bookStatus, deleteStatus,purchaseStatus])
 
   // to access the user details in profile page
   useEffect(() => {
@@ -293,7 +293,7 @@ function Profile() {
         </div>
         <EditProfile />
       </div>
-      <p className='text-justify md:px-20 px-5 my-5 text-lg'>{userProfile.bio == ""?"Hey...GIve your bio":userProfile.bio} </p>
+      <p className='text-justify md:px-20 px-5 my-5 text-lg'>{userProfile.bio == "" ? "Hey...GIve your bio" : userProfile.bio} </p>
       {/* tab section */}
       <div className='md:px-40 px-5 mb-10'>
         <div className="flex justify-center items-center text-xl">
